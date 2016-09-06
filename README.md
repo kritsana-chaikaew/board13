@@ -14,6 +14,6 @@ Project structure
 
 **Assets**
  1. 3D Objects
+ 
 >path: assets/objects
 >file type: .g3db
-
