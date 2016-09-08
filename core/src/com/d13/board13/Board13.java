@@ -1,9 +1,6 @@
 package com.d13.board13;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 
 public class Board13 extends Game {
 

@@ -29,7 +29,7 @@ public final class Piece extends ModelInstance {
     Vector3 tilePosition = new Vector3();
     this.onTile = tile.getIndex();
     tile.transform.getTranslation(tilePosition);
-    tilePosition.y += 1.f;
+    tilePosition.y += 1.2f;
     this.transform.setToTranslation(tilePosition);
   }
 
