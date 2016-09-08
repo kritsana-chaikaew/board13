@@ -79,7 +79,7 @@ public class Manager {
 		modelBatch.begin(camera);
 		modelBatch.render(tiles, environment);
 		for(int i=0; i<characters.size; i++){
-			characters.get(i).render(modelBatch, environment);
+			characters.get(i).render(modelBatch, envi);
 		}
 		modelBatch.end();
 

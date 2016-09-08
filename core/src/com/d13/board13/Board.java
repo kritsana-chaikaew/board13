@@ -9,6 +9,14 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.assets.AssetManager;
 
+import com.badlogic.gdx.Gdx;
+
+public class Board extends InputAdapter {
+	private static final String TILE_PATH = AssetsManager.TILE_PATH;
+	private static final String MONSTER_PATH = AssetsManager.MONSTER_PATH;
+
+import com.badlogic.gdx.Gdx;
+
 public class Board extends InputAdapter {
 	private static final String TILE_PATH = AssetsManager.TILE_PATH;
 	private static final String MONSTER_PATH = AssetsManager.MONSTER_PATH;

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
+import com.badlogic.gdx.Gdx;
+
 public class Actor{
     protected ModelInstance modelInstance;
     Material modelMaterial;
