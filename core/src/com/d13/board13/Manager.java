@@ -18,16 +18,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 
 public class Manager {
-	public static final String MONSTER_PATH = "objects/mon1/mon1.g3db";
-	public static final String TILE_PATH = "objects/tile/tile.obj";
 	
 	private Environment environment;
-	public PerspectiveCamera cam;
+	public Camera camera;
 	private CameraInputController camController;
 	
 	private InputMultiplexer inputMultiplexer;
 	
-	public final AssetManager assetManager = new AssetManager();;
+	public final AssetsManager assetsManager;
 
 	private ModelBatch modelBatch;
 	
@@ -42,21 +40,14 @@ public class Manager {
 	public Board board;
 	  
 	public Manager () {
-		setupCamera();
-		camController = new CameraInputController(cam);
-		setupAssetManager();
-		board = new Board(this, assetManager);
+		camera = new Camera();
+		camController = new CameraInputController(camera);
+		assetsManager = new AssetsManager();
+		board = new Board(this, assetsManager);
 		modelBatch = new ModelBatch();
 		setupLabel();
 		setupEnvironment();
 		setInputMultiplexer();
-	}
-	
-	public void setupAssetManager () {
-	    assetManager.load(TILE_PATH, Model.class);
-	    assetManager.load(MONSTER_PATH, Model.class);
-	    assetManager.finishLoading();
-	    Gdx.app.log("asd", assetManager.getQueuedAssets() + "");
 	}
 	
 	public void setInputMultiplexer () {
@@ -79,22 +70,13 @@ public class Manager {
 		stringBuilder = new StringBuilder();
 	}
 	
-	public void setupCamera () {
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(0f, 7f, 20f);
-		cam.lookAt(0, 0, 0);
-		cam.near = 1f;
-		cam.far = 300f;
-		cam.update();
-	}
-	
 	public void render () {
 		camController.update();
 
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		modelBatch.begin(cam);
+		modelBatch.begin(camera);
 		modelBatch.render(tiles, environment);
 		modelBatch.render(pieces, environment);
 		modelBatch.end();

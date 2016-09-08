@@ -10,11 +10,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.assets.AssetManager;
 
 public class Board extends InputAdapter {
-	private static final String TILE_PATH = Manager.TILE_PATH;
-	private static final String MONSTER_PATH = Manager.MONSTER_PATH;
+	private static final String TILE_PATH = AssetsManager.TILE_PATH;
+	private static final String MONSTER_PATH = AssetsManager.MONSTER_PATH;
 
 	public Manager manager;
-	public AssetManager assetManager;
+	public AssetsManager assetsManager;
 	
 	public int selected = -1, selecting = -1;
 	public Material selectionMaterial;
@@ -22,9 +22,9 @@ public class Board extends InputAdapter {
 	
 	public Vector3 position = new Vector3();
 	
-	public Board (Manager manager,AssetManager assetManager) {
+	public Board (Manager manager,AssetsManager assetsManager) {
     this.manager = manager;
-    this.assetManager = assetManager;
+    this.assetsManager = assetsManager;
     setup();
 
     selectionMaterial = new Material();
@@ -38,7 +38,7 @@ public class Board extends InputAdapter {
   }
   
   public void setupTile () {
-	  Model tileModel = assetManager.get(TILE_PATH, Model.class);
+	  Model tileModel = assetsManager.get(TILE_PATH, Model.class);
 	  float tileRadius = 1f; //new Tile(tileModel).getRadius();
 	  float boardWidth = tileRadius * 10;
 	  for ( float x = -boardWidth; x < boardWidth; x +=  2 * tileRadius) {
@@ -55,7 +55,7 @@ public class Board extends InputAdapter {
   }
   
   public void setupPiece () {
-	  Model pieceModel = manager.assetManager.get(MONSTER_PATH, Model.class);
+	  Model pieceModel = manager.assetsManager.get(MONSTER_PATH, Model.class);
 	  Piece piece = new Piece(pieceModel);
 	  piece.setOnTile(manager.tiles.get(45));
 	  manager.pieces.add(piece);
@@ -117,7 +117,7 @@ public class Board extends InputAdapter {
 	}
 
 	public int getGameObject (int screenX, int screenY) {
-		Ray ray = manager.cam.getPickRay(screenX, screenY);
+		Ray ray = manager.camera.getPickRay(screenX, screenY);
 		int result = -1;
 		float distance = -1;
 
