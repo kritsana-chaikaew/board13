@@ -42,15 +42,15 @@ public class Actor{
     }
 
     public void setPosition(Vector3 position) {
-        modelInstance.transform.setToTranslation(position);
+    	modelInstance.transform.setToTranslation(position);
     }
 
     public Vector3 getCenter () {
-      return center;
+    	return center;
     }
 
     public float getRadius () {
-      return radius;
+    	return radius;
     }
 
     public void prepareModel(){
@@ -64,5 +64,9 @@ public class Actor{
         //setup material
         modelMaterial = new Material();
         modelMaterial.set(modelInstance.materials.get(0));
+    }
+    
+    public interface OnActorClickListener {
+    	public void onActorClicked ();
     }
 }

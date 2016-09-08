@@ -1,5 +1,7 @@
 package com.d13.board13;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
@@ -16,8 +18,9 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
+import com.d13.board13.Actor.OnActorClickListener;
 
-public class Manager {
+public class Manager implements OnActorClickListener {
 
 	private Environment environment;
 	public Camera camera;
@@ -29,15 +32,17 @@ public class Manager {
 
 	private ModelBatch modelBatch;
 
-	public Array<Tile> tiles = new Array<Tile>();
-	public Array<Character> characters = new Array<Character>();
-
+	public ArrayList<Tile> tiles = new ArrayList<Tile>();
+	public ArrayList<Character> characters = new ArrayList<Character>();
+	
 	private Stage stage;
 	private Label label;
 	private BitmapFont font;
 	private StringBuilder stringBuilder;
 
 	public Board board;
+	
+	public InputManager inputManager;
 
 	public Manager () {
 		camera = new Camera();
@@ -45,13 +50,18 @@ public class Manager {
 		assetsManager = new AssetsManager();
 		board = new Board(this, assetsManager);
 		modelBatch = new ModelBatch();
+		inputManager = new InputManager(this);
 		setupLabel();
 		setupEnvironment();
 		setInputMultiplexer();
 	}
+	
+	public void onActorClicked () {
+		
+	}
 
 	public void setInputMultiplexer () {
-		inputMultiplexer = new InputMultiplexer(board, camController);
+		inputMultiplexer = new InputMultiplexer(inputManager, camController);
 		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 
@@ -77,19 +87,14 @@ public class Manager {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		modelBatch.begin(camera);
-		modelBatch.render(tiles, environment);
-		for(int i=0; i<characters.size; i++){
-			characters.get(i).render(modelBatch, envi);
+		for(int i=0; i<tiles.size(); i++){
+			tiles.get(i).render(modelBatch, environment);
+		}
+		for(int i=0; i<characters.size(); i++){
+			characters.get(i).render(modelBatch, environment);
 		}
 		modelBatch.end();
 
-		stringBuilder.setLength(0);
-		stringBuilder.append(" Selected: ").append(board.selected);
-		if (board.selected >= 0 && board.selected < 100) {
-			stringBuilder.append(" isEmpty: ").append(tiles.get(board.selected).isEmpty());
-			stringBuilder.append(" Type: ").append(tiles.get(board.selected).getType());
-		}
-		label.setText(stringBuilder);
 		stage.draw();
 
 	}
