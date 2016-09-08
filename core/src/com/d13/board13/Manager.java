@@ -18,19 +18,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 
 public class Manager {
-	
+
 	private Environment environment;
 	public Camera camera;
 	private CameraInputController camController;
-	
+
 	private InputMultiplexer inputMultiplexer;
-	
+
 	public final AssetsManager assetsManager;
 
 	private ModelBatch modelBatch;
-	
+
 	public Array<Tile> tiles = new Array<Tile>();
-	public Array<Piece> pieces = new Array<Piece>();
+	public Array<Character> characters = new Array<Character>();
 
 	private Stage stage;
 	private Label label;
@@ -38,7 +38,7 @@ public class Manager {
 	private StringBuilder stringBuilder;
 
 	public Board board;
-	  
+
 	public Manager () {
 		camera = new Camera();
 		camController = new CameraInputController(camera);
@@ -49,7 +49,7 @@ public class Manager {
 		setupEnvironment();
 		setInputMultiplexer();
 	}
-	
+
 	public void setInputMultiplexer () {
 		inputMultiplexer = new InputMultiplexer(board, camController);
 		Gdx.input.setInputProcessor(inputMultiplexer);
@@ -59,9 +59,9 @@ public class Manager {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-		
+
 	}
-	
+
 	public void setupLabel () {
 		stage = new Stage();
 		font = new BitmapFont();
@@ -69,7 +69,7 @@ public class Manager {
 		stage.addActor(label);
 		stringBuilder = new StringBuilder();
 	}
-	
+
 	public void render () {
 		camController.update();
 
@@ -78,7 +78,9 @@ public class Manager {
 
 		modelBatch.begin(camera);
 		modelBatch.render(tiles, environment);
-		modelBatch.render(pieces, environment);
+		for(int i=0; i<characters.size; i++){
+			characters.get(i).render(modelBatch, environment);
+		}
 		modelBatch.end();
 
 		stringBuilder.setLength(0);
@@ -89,6 +91,6 @@ public class Manager {
 		}
 		label.setText(stringBuilder);
 		stage.draw();
-		
+
 	}
 }
