@@ -76,7 +76,6 @@ public class InputManager implements InputProcessor {
 	public Actor getGameObject (int screenX, int screenY) {
 		Actor actor = null;
 		Ray ray = manager.camera.getPickRay(screenX, screenY);
-		int result = -1;
 		float distance = -1;
 		for (int i = 0; i < manager.tiles.size(); i++) {
 			
@@ -101,7 +100,6 @@ public class InputManager implements InputProcessor {
 
 	        if (dist2 <= tile.getRadius() * tile.getRadius()) {
 	        	Gdx.app.log("result", i + "");
-	        	result = i;
 	        	actor = tile;
 	        	distance = dist2;
 			}
@@ -131,7 +129,6 @@ public class InputManager implements InputProcessor {
           		continue;
 
         	if (dist2 <= character.getRadius() * character.getRadius()) {
-          		result = i + 100;
           		actor = character;
           		distance = dist2;
 			}

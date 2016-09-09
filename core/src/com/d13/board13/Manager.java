@@ -4,20 +4,16 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Array;
 import com.d13.board13.Actor.OnActorClickListener;
 
 public class Manager implements OnActorClickListener {
@@ -38,8 +34,6 @@ public class Manager implements OnActorClickListener {
 	private Stage stage;
 	private Label label;
 	private BitmapFont font;
-	private StringBuilder stringBuilder;
-
 	public Board board;
 	
 	public InputManager inputManager;
@@ -57,7 +51,7 @@ public class Manager implements OnActorClickListener {
 	}
 	
 	public void onActorClicked () {
-		
+		Gdx.app.log("onClick", "Mon1 is Clicked!!!");
 	}
 
 	public void setInputMultiplexer () {
@@ -77,7 +71,7 @@ public class Manager implements OnActorClickListener {
 		font = new BitmapFont();
 		label = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
 		stage.addActor(label);
-		stringBuilder = new StringBuilder();
+		new StringBuilder();
 	}
 
 	public void render () {
