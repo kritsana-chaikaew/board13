@@ -1,5 +1,6 @@
 package com.d13.board13;
 
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -14,8 +15,13 @@ public class Actor{
     Material modelMaterial;
 
     private float radius;
-    private Vector3 center = new Vector3();
-    private Vector3 dimension = new Vector3();
+    private Vector3 center;
+    private Vector3 dimension;
+
+    public Actor(Model model){
+        modelInstance = new ModelInstance(model);
+        prepareModel();
+    }
 
     public void render(ModelBatch modelBatch, Environment environment){
         modelBatch.render(modelInstance, environment);
@@ -54,6 +60,8 @@ public class Actor{
     public void prepareModel(){
         //calculate objects body
         BoundingBox boundingBox = new BoundingBox();
+        center = new Vector3();
+        dimension = new Vector3();
         modelInstance.calculateBoundingBox(boundingBox);
         boundingBox.getCenter(center);
         boundingBox.getDimensions(dimension);
@@ -62,9 +70,5 @@ public class Actor{
         //setup material
         modelMaterial = new Material();
         modelMaterial.set(modelInstance.materials.get(0));
-    }
-    
-    public interface OnActorClickListener {
-    	public void onActorClicked ();
     }
 }

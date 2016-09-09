@@ -46,7 +46,6 @@ public class InputManager implements InputProcessor {
 		if (actor != null) {
 			if(actor instanceof Character){
 				actor.toggleSelection();
-				manager.onActorClicked();	
 			} else if(actor instanceof Tile){
 				actor.toggleSelection();
 			}
@@ -72,13 +71,13 @@ public class InputManager implements InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public Actor getGameObject (int screenX, int screenY) {
 		Actor actor = null;
 		Ray ray = manager.camera.getPickRay(screenX, screenY);
 		float distance = -1;
 		for (int i = 0; i < manager.tiles.size(); i++) {
-			
+
 			final Tile tile = manager.tiles.get(i);
 			position = tile.getPosition();
 			position.add(tile.getCenter());
@@ -136,14 +135,14 @@ public class InputManager implements InputProcessor {
 
 		return actor;
 	}
-	
+
 	public boolean isTouch(Actor actor) {
 		for (int i = 0; i < manager.tiles.size(); i++) {
 			if (actor == manager.tiles.get(i)) {
 				return true;
 			}
 		}
-		
+
 		for (int i = 0; i < manager.characters.size(); i++) {
 			if (actor == manager.characters.get(i)) {
 				return true;

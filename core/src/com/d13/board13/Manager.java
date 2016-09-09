@@ -12,66 +12,62 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.d13.board13.Actor.OnActorClickListener;
+import com.badlogic.gdx.math.Vector3;
 
-public class Manager implements OnActorClickListener {
-
-	private Environment environment;
-	public Camera camera;
+public class Manager{
 	private CameraInputController camController;
-
+	private InputManager inputManager;
 	private InputMultiplexer inputMultiplexer;
 
-	public final AssetsManager assetsManager;
-
+ 	private AssetsManager assetsManager;
+	private Environment environment;
 	private ModelBatch modelBatch;
 
+	private Board board;
+
+	public Camera camera;
 	public ArrayList<Tile> tiles = new ArrayList<Tile>();
 	public ArrayList<Character> characters = new ArrayList<Character>();
-	
-	private Stage stage;
-	private Label label;
-	private BitmapFont font;
-	public Board board;
-	
-	public InputManager inputManager;
 
 	public Manager () {
-		camera = new Camera();
-		camController = new CameraInputController(camera);
-		assetsManager = new AssetsManager();
-		board = new Board(this, assetsManager);
-		modelBatch = new ModelBatch();
-		inputManager = new InputManager(this);
-		setupLabel();
+		setupInput();
 		setupEnvironment();
-		setInputMultiplexer();
-	}
-	
-	public void onActorClicked () {
-		Gdx.app.log("onClick", "Mon1 is Clicked!!!");
+
+		modelBatch = new ModelBatch();
+		assetsManager = new AssetsManager();
+
+		board = new Board(this);
+		board.setup(assetsManager);
+		setupCharactor();
 	}
 
-	public void setInputMultiplexer () {
+	public void setupCharactor () {
+	  	Vector3 tilePosition = new Vector3();
+	  	tilePosition = tiles.get(45).getPosition();
+	  	tilePosition.y += 1.2f;
+
+		Character character = new Mon1(assetsManager.getModel(Mon1.class));
+	  	character.setPosition(tilePosition);
+		characters.add(character);
+	}
+
+	private void setupInput () {
+		camera = new Camera();
+		camController = new CameraInputController(camera);
+
+		inputManager = new InputManager(this);
+
 		inputMultiplexer = new InputMultiplexer(inputManager, camController);
 		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 
-	public void setupEnvironment () {
+	private void setupEnvironment () {
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-	}
-
-	public void setupLabel () {
-		stage = new Stage();
-		font = new BitmapFont();
-		label = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
-		stage.addActor(label);
-		new StringBuilder();
+		environment.set(new ColorAttribute(
+				ColorAttribute.AmbientLight,
+				0.4f, 0.4f, 0.4f, 1f));
+		environment.add(new DirectionalLight().
+				set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 	}
 
 	public void render () {
@@ -80,6 +76,7 @@ public class Manager implements OnActorClickListener {
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+		//real render
 		modelBatch.begin(camera);
 		for(int i=0; i<tiles.size(); i++){
 			tiles.get(i).render(modelBatch, environment);
@@ -88,8 +85,5 @@ public class Manager implements OnActorClickListener {
 			characters.get(i).render(modelBatch, environment);
 		}
 		modelBatch.end();
-
-		stage.draw();
-
 	}
 }

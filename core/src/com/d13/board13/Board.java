@@ -1,45 +1,23 @@
 package com.d13.board13;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 public class Board {
-	public Manager manager;
-	public AssetsManager assetsManager;
+	private Manager manager;
 
-	public Vector3 position = new Vector3();
-
-	public Board (Manager manager,AssetsManager assetsManager) {
+	public Board (Manager manager) {
     	this.manager = manager;
-    	this.assetsManager = assetsManager;
-    	setup();
 	}
 
-	public void setup () {
-		setupTile();
-		setupCharactor();
-	}
-
-	public void setupTile () {
+	public void setup (AssetsManager assetsManager) {
 		float tileRadius = 1f;
 		float boardWidth = tileRadius * 10;
 		for ( float x = -boardWidth; x < boardWidth; x +=  2 * tileRadius) {
 			for ( float z = -boardWidth; z < boardWidth; z += 2 * tileRadius) {
-				Tile tile = new Tile(assetsManager);
-				Gdx.app.log("x", Float.toString(x));
-				Gdx.app.log("z", Float.toString(z));
+				Tile tile = new Tile(assetsManager.getModel(Tile.class));
 				tile.setPosition(new Vector3(x, 0, z));
 				manager.tiles.add(tile);
 			}
 	 	}
-	}
-
-	public void setupCharactor () {
-	  	Character character = new Mon1(assetsManager);
-	  	Vector3 tilePosition = new Vector3();
-	  	tilePosition = manager.tiles.get(45).getPosition();
-	  	tilePosition.y += 1.2f;
-	  	character.setPosition(tilePosition);
-		manager.characters.add(character);
 	}
 }
