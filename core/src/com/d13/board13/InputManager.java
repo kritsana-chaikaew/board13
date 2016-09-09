@@ -6,8 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
 public class InputManager implements InputProcessor {
-	public Manager manager;
-	public Vector3 position = new Vector3();
+	private Manager manager;
 
 	public InputManager (Manager manager) {
 		this.manager = manager;
@@ -72,15 +71,18 @@ public class InputManager implements InputProcessor {
 		return false;
 	}
 
-	public Actor getGameObject (int screenX, int screenY) {
-		Actor actor = null;
-		Ray ray = manager.camera.getPickRay(screenX, screenY);
-		float distance = -1;
-		for (int i = 0; i < manager.tiles.size(); i++) {
+	private Actor getGameObject (int screenX, int screenY) {
+		Actor object = null;
+		Actor actor;
+		Vector3 position;
 
-			final Tile tile = manager.tiles.get(i);
-			position = tile.getPosition();
-			position.add(tile.getCenter());
+		Ray ray = manager.getCamera().getPickRay(screenX, screenY);
+		float distance = -1;
+
+		for (int i = 0; i < manager.getActors().size(); i++) {
+			actor = manager.getActors().get(i);
+			position = actor.getPosition();
+			position.add(actor.getCenter());
 
 	      	float len = ray.direction.dot(
 					position.x-ray.origin.x,
@@ -89,6 +91,7 @@ public class InputManager implements InputProcessor {
 	      	if (len < 0f) {
 	        	continue;
 	      	}
+
 	        float dist2 = position.dst2(
 					ray.origin.x+ray.direction.x*len,
 	        		ray.origin.y+ray.direction.y*len,
@@ -97,57 +100,13 @@ public class InputManager implements InputProcessor {
 	        	continue;
 	        }
 
-	        if (dist2 <= tile.getRadius() * tile.getRadius()) {
-	        	Gdx.app.log("result", i + "");
-	        	actor = tile;
-	        	distance = dist2;
+	        if (dist2 <= actor.getRadius() * actor.getRadius()) {
+	        	Gdx.app.log("result", i + " ");
+				distance = dist2;
+				object =  actor;
 			}
 		}
 
-    	// Loop for characters
-    	for (int i = 0; i < manager.characters.size(); i++) {
-
-			final Character character = manager.characters.get(i);
-			position = character.getPosition();
-			position.add(character.getCenter());
-
-      		float len = ray.direction.dot(
-					position.x-ray.origin.x,
-        			position.y-ray.origin.y,
-					position.z-ray.origin.z);
-
-      		if (len < 0f)
-        		continue;
-
-        	float dist2 = position.dst2(
-					ray.origin.x+ray.direction.x*len,
-          			ray.origin.y+ray.direction.y*len,
-					ray.origin.z+ray.direction.z*len);
-
-        	if (distance >= 0f && dist2 > distance)
-          		continue;
-
-        	if (dist2 <= character.getRadius() * character.getRadius()) {
-          		actor = character;
-          		distance = dist2;
-			}
-		}
-
-		return actor;
-	}
-
-	public boolean isTouch(Actor actor) {
-		for (int i = 0; i < manager.tiles.size(); i++) {
-			if (actor == manager.tiles.get(i)) {
-				return true;
-			}
-		}
-
-		for (int i = 0; i < manager.characters.size(); i++) {
-			if (actor == manager.characters.get(i)) {
-				return true;
-			}
-		}
-		return false;
+		return object;
 	}
 }

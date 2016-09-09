@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -19,15 +18,14 @@ public class Manager{
 	private InputManager inputManager;
 	private InputMultiplexer inputMultiplexer;
 
- 	private AssetsManager assetsManager;
 	private Environment environment;
 	private ModelBatch modelBatch;
 
 	private Board board;
+	private Camera camera;
 
-	public Camera camera;
-	public ArrayList<Tile> tiles = new ArrayList<Tile>();
-	public ArrayList<Character> characters = new ArrayList<Character>();
+	private AssetsManager assetsManager;
+	private ArrayList<Actor> actors;
 
 	public Manager () {
 		setupInput();
@@ -36,19 +34,17 @@ public class Manager{
 		modelBatch = new ModelBatch();
 		assetsManager = new AssetsManager();
 
+		actors = new ArrayList<Actor>();
 		board = new Board(this);
 		board.setup(assetsManager);
-		setupCharactor();
 	}
 
-	public void setupCharactor () {
-	  	Vector3 tilePosition = new Vector3();
-	  	tilePosition = tiles.get(45).getPosition();
-	  	tilePosition.y += 1.2f;
+	public Camera getCamera(){
+		return camera;
+	}
 
-		Character character = new Mon1(assetsManager.getModel(Mon1.class));
-	  	character.setPosition(tilePosition);
-		characters.add(character);
+	public ArrayList<Actor> getActors(){
+		return actors;
 	}
 
 	private void setupInput () {
@@ -78,11 +74,8 @@ public class Manager{
 
 		//real render
 		modelBatch.begin(camera);
-		for(int i=0; i<tiles.size(); i++){
-			tiles.get(i).render(modelBatch, environment);
-		}
-		for(int i=0; i<characters.size(); i++){
-			characters.get(i).render(modelBatch, environment);
+		for(int i=0; i<actors.size(); i++){
+			actors.get(i).render(modelBatch, environment);
 		}
 		modelBatch.end();
 	}

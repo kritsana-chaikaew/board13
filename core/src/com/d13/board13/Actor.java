@@ -12,11 +12,11 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class Actor{
     protected ModelInstance modelInstance;
-    Material modelMaterial;
+    protected Material modelMaterial;
 
-    private float radius;
-    private Vector3 center;
-    private Vector3 dimension;
+    protected float radius;
+    protected Vector3 center;
+    protected Vector3 dimension;
 
     public Actor(Model model){
         modelInstance = new ModelInstance(model);
@@ -42,7 +42,7 @@ public class Actor{
     public Vector3 getPosition(){
         Vector3 position = new Vector3();
         modelInstance.transform.getTranslation(position);
-        return position;
+        return position.cpy();
     }
 
     public void setPosition(Vector3 position) {
@@ -50,7 +50,7 @@ public class Actor{
     }
 
     public Vector3 getCenter () {
-    	return center;
+    	return center.cpy();
     }
 
     public float getRadius () {
